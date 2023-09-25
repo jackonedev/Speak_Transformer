@@ -13,10 +13,8 @@ tokenizer_es_en = AutoTokenizer.from_pretrained(model_es_en)
 model_es_en = AutoModelForSeq2SeqLM.from_pretrained(model_es_en)
 
 
-language = "en-es"
-text = input("Ingrese texto: ")
 
-def model_pipeline(langugage, text):
+def model_pipeline(language, text):
     if language == "es-en":
         tokenized_text = tokenizer_es_en(text, return_tensors="pt")
         translation = model_es_en.generate(**tokenized_text)
@@ -30,3 +28,13 @@ def model_pipeline(langugage, text):
         translated = translated.replace("_", " ")
 
     return translated
+
+
+
+if __name__ == "__main__":
+
+    language = "en-es"
+    text = input("Ingrese texto: ")
+
+    translated = model_pipeline(language, text)
+    print(translated)

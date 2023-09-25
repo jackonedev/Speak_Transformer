@@ -1,6 +1,7 @@
 from typing import Union
 
 from fastapi import FastAPI
+from model import model_pipeline
 
 app = FastAPI()
 
@@ -13,17 +14,7 @@ def read_root():
 @app.get("/translate/{language}")
 def read_item(language: str, text: Union[str, None] = None):
 
-    if language == "en-es":
-        processed_text = text.upper()
-        
-        pass
+    processed_text = model_pipeline(language, text)
     
-    elif language == "es-en":
-        processed_text = text.upper()
-        pass
 
-    else:
-        return {"error": "language not supported"}
-    
-    
     return {"translate": processed_text}
