@@ -2,8 +2,12 @@ from fastapi import FastAPI
 from typing import Union
 from enum import Enum
 from model import model_pipeline
+from pydantic import BaseModel
 
 app = FastAPI()
+
+class Text(BaseModel):
+    text: str
 
 
 class Language(str, Enum):
@@ -11,13 +15,10 @@ class Language(str, Enum):
     en_es = "en-es"
 
 
-@app.get("/translate/{language}", status_code=200)
-def translate(language: Language, text: Union[str, None] = None):
+@app.post("/translate/{language}", status_code=200)
+def translate(language: Language, text: Text):
 
-    if text is None:
-        return {"error": "No text provided"}
-
-    processed_text = model_pipeline(language, text)
+    processed_text = model_pipeline(language, text.text)
     return {"translate": processed_text}
 
 
